@@ -24,10 +24,16 @@ const recommend = (req, res) => {
         console.log(req.file);
 
         return res.json({
-            success: true
+            success: true,
+            file: {
+                originalname: req.file.originalname,
+                mimetype: req.file.mimetype,
+                size: req.file.size
+            }
         });
+    }
 
-    } catch (error) {
+    catch (error) {
         console.error(error);
 
         return res.status(500).json({
