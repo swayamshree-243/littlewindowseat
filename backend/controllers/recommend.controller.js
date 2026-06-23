@@ -36,7 +36,7 @@ const recommend = async (req, res) => {
 
         return res.status(500).json({
             success: false,
-            message: "Internal server error"
+            message: error.message
         });
     }
 };

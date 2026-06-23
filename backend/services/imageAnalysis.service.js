@@ -1,63 +1,66 @@
-const { OpenAI } = require("openai");
+const { GoogleGenAI } = require("@google/genai");
 require("dotenv").config();
 
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+const ai = new GoogleGenAI({
+    apiKey: process.env.GEMINI_API_KEY
 });
 
 async function analyzeImage(buffer) {
     try {
         const base64Image = buffer.toString("base64");
 
-        const response = await client.responses.create({
-            model: "gpt-4.1-mini",
-            input: [
-                {
-                    role: "user",
-                    content: [
-                        {
-                            type: "input_text",
-                            text: `
+        const prompt = `
 Analyze this image and return structured JSON only.
 
 Schema:
 {
-  "lighting": "",
-  "mood": "",
+  "lighting": [],
+  "mood": [],
   "colors": [],
-  "setting": "",
+  "setting": [],
   "objects": [],
-  "weather": "",
-  "aesthetic": "",
+  "weather": [],
+  "aesthetic": [],
   "tags": []
 }
 
 Rules:
 - Be precise and visually grounded
-- Lighting: brightness + tone (bright, warm, soft, dark, etc.)
-- Mood: emotional feel (calm, energetic, nostalgic, tense, etc.)
+- Lighting: brightness + tone
+- Mood: emotional feel
 - Colors: dominant visible colors only
-- Setting: environment (indoor, street, school, nature, etc.)
+- Setting: environment
 - Objects: important visible items only
 - Weather: infer only if clearly visible
-- Aesthetic: overall vibe (cinematic, cozy, nostalgic youth, futuristic, etc.)
-- Tags: 5–10 short keywords
+- Aesthetic: overall vibe
+- Tags: 5-10 short keywords
+- Keep all string values short (1-4 words maximum)
+- Do not write full sentences
+- Use standardized labels whenever possible
 
 Return ONLY valid JSON.
 Do not include markdown, backticks, or explanations.
-Ensure output is parseable by JSON.parse().
-                            `.trim()
-                        },
+`;
+
+            const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: [
+                {
+                    parts: [
+                        { text: prompt },
                         {
-                            type: "input_image",
-                            image_url: `data:image/jpeg;base64,${base64Image}`
+                            inlineData: {
+                                mimeType: "image/jpeg",
+                                data: base64Image
+                            }
                         }
                     ]
                 }
             ]
-        });
+        }); 
 
-        return JSON.parse(response.output_text);
+        console.log(response.text);
+        return JSON.parse(response.text);
 
     } catch (error) {
         console.error("AI ERROR:", error);
