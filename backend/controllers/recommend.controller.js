@@ -1,4 +1,6 @@
-const recommend = (req, res) => {
+const { analyzeImage } = require("../services/imageAnalysis.service");
+
+const recommend = async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({
@@ -21,15 +23,11 @@ const recommend = (req, res) => {
             });
         }
 
-        console.log(req.file);
+        const result = await analyzeImage(req.file.buffer);
 
         return res.json({
             success: true,
-            file: {
-                originalname: req.file.originalname,
-                mimetype: req.file.mimetype,
-                size: req.file.size
-            }
+            result
         });
     }
 
