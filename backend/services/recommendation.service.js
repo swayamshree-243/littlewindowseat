@@ -63,58 +63,6 @@ function calculateScore(imageData, recommendation) {
     return Math.round(score * 100);
 }
 
-const sampleRecommendation = {
-    title: "When I Fly Towards You",
-
-    lighting: [
-        "bright",
-        "warm",
-        "sunlight"
-    ],
-
-    mood: [
-        "joyful",
-        "energetic",
-        "free",
-        "friendly"
-    ],
-
-    colors: [
-        "light blue",
-        "dark blue",
-        "white",
-        "pink",
-        "sand brown"
-    ],
-
-    setting: [
-        "beach",
-        "ocean",
-        "coastline",
-        "outdoor"
-    ],
-
-    objects: [
-        "people",
-        "sand",
-        "water",
-        "friends"
-    ],
-
-    weather: [
-        "sunny",
-        "clear"
-    ],
-
-    aesthetic: [
-        "youthful",
-        "summer",
-        "casual",
-        "friendship"
-    ]
-};
-
 module.exports = {
-    calculateScore,
-    sampleRecommendation
+    calculateScore
 };
