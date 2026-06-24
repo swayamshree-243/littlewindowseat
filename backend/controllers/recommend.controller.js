@@ -1,7 +1,7 @@
 const { analyzeImage } = require("../services/imageAnalysis.service");
 const recommendations = require("../data/recommendations");
 const {
-    calculateScore
+    calculateRecommendationScore
 } = require("../services/recommendation.service");
 
 const recommend = async (req, res) => {
@@ -30,24 +30,41 @@ const recommend = async (req, res) => {
         const result = await analyzeImage(req.file.buffer);
 
         const scoredRecommendations =
-            recommendations.map(recommendation => ({
-                title: recommendation.title,
-                type: recommendation.type,
-                score: calculateScore(
-                    result,
-                    recommendation
-                )
-            }));
+            recommendations.map(recommendation => {
+
+                const resultScore =
+                    calculateRecommendationScore(
+                        result,
+                        recommendation
+                    );
+
+                return {
+                    id: recommendation.id,
+                    slug: recommendation.slug,
+                    title: recommendation.title,
+                    type: recommendation.type,
+
+                    score: resultScore.score,
+
+                    matchedProfile:
+                        resultScore.matchedProfile
+                };
+            });
 
         scoredRecommendations.sort(
             (a, b) => b.score - a.score
         );
 
+        const filteredRecommendations =
+            scoredRecommendations.filter(
+                item => item.score > 0
+            );
+
         return res.json({
             success: true,
             analysis: result,
             recommendations:
-                scoredRecommendations.slice(0, 5)
+                filteredRecommendations.slice(0, 5)
         });
 
     } catch (error) {
