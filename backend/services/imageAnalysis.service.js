@@ -25,21 +25,58 @@ Schema:
 }
 
 Rules:
-- Be precise and visually grounded
-- Lighting: brightness + tone
-- Mood: emotional feel
-- Colors: dominant visible colors only
-- Setting: environment
-- Objects: important visible items only
-- Weather: infer only if clearly visible
-- Aesthetic: overall vibe
-- Tags: 5-10 short keywords
-- Keep all string values short (1-4 words maximum)
-- Do not write full sentences
-- Use standardized labels whenever possible
+- Be visually accurate.
+- Return arrays for every field.
+- Use standardized tags.
+- Each array item must represent ONE concept only.
+- Prefer 1 word per item.
+- Maximum 2 words per item.
+- Never use full sentences.
+- Never combine multiple concepts into one item.
+
+Examples:
+"Sandy beach" -> "beach"
+"Clear sky" -> "clear"
+"Deep blue ocean" -> "ocean"
+"Summertime" -> "summer"
+"Youthful friendship" -> ["youthful", "friendship"]
+"Vacation vibe" -> "vacation"
+
+Field Guidelines:
+
+Lighting:
+- Examples: bright, warm, soft, natural, dark, neon
+
+Mood:
+- Examples: joyful, calm, energetic, romantic, nostalgic, peaceful
+
+Colors:
+- Dominant visible colors only.
+- Examples: blue, white, pink, green, beige
+
+Setting:
+- Environment tags only.
+- Examples: beach, ocean, school, classroom, park, street, mountain, city
+
+Objects:
+- Important visible objects only.
+- Examples: people, bicycle, bag, book, water, tree
+
+Weather:
+- Examples: sunny, clear, cloudy, rainy, snowy
+
+Aesthetic:
+- Examples: youthful, summer, friendship, vacation, cozy, cinematic, romantic, nostalgic
+
+Tags:
+- 5-10 general keywords describing the image.
+
+If multiple concepts exist, split them into separate array items.
 
 Return ONLY valid JSON.
-Do not include markdown, backticks, or explanations.
+Do not include markdown.
+Do not include explanations.
+Output must be parseable by JSON.parse().
 `;
 
             const response = await ai.models.generateContent({

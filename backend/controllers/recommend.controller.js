@@ -1,5 +1,10 @@
 const { analyzeImage } = require("../services/imageAnalysis.service");
 
+const {
+    calculateScore,
+    sampleRecommendation
+} = require("../services/recommendation.service");
+
 const recommend = async (req, res) => {
     try {
         if (!req.file) {
@@ -25,18 +30,26 @@ const recommend = async (req, res) => {
 
         const result = await analyzeImage(req.file.buffer);
 
+        const score = calculateScore(
+            result,
+            sampleRecommendation
+        );
+
         return res.json({
             success: true,
-            result
+            analysis: result,
+            recommendation: {
+                title: sampleRecommendation.title,
+                score
+            }
         });
-    }
 
-    catch (error) {
+    } catch (error) {
         console.error(error);
 
         return res.status(500).json({
             success: false,
-            message: error.message
+            message: "Internal server error"
         });
     }
 };
