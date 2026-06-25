@@ -1,27 +1,45 @@
+import { analyzeImage } from "../services/recommendationService";
 import { useState } from "react";
 
 function UploadBox() {
-  const [file, setFile] = useState(null);
+    const [file, setFile] = useState(null);
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
+    };
 
-  return (
-    <div>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-      />
+    const handleAnalyze = async () => {
+        if (!file) return;
 
-      {file && (
-        <p>
-          Selected: {file.name}
-        </p>
-      )}
-    </div>
-  );
+        await analyzeImage(file);
+    };
+    return (
+        <div>
+            <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+            />
+
+            {file && (
+                <>
+                    <p>Selected: {file.name}</p>
+
+                    <img
+                        src={URL.createObjectURL(file)}
+                        alt="Preview"
+                        width="300"
+                    />
+
+                    <br />
+
+                    <button onClick={handleAnalyze}>
+                        Analyze Image
+                    </button>
+                </>
+            )}
+        </div>
+    );
 }
 
 export default UploadBox;
