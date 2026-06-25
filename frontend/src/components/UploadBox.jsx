@@ -11,7 +11,9 @@ function UploadBox() {
     const handleAnalyze = async () => {
         if (!file) return;
 
-        await analyzeImage(file);
+        const data = await analyzeImage(file);
+
+        console.log(data);
     };
     return (
         <div>
