@@ -3,6 +3,7 @@ import { useState } from "react";
 
 function UploadBox() {
     const [file, setFile] = useState(null);
+    const [results, setResults] = useState(null);
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -13,7 +14,7 @@ function UploadBox() {
 
         const data = await analyzeImage(file);
 
-        console.log(data);
+        setResults(data);
     };
     return (
         <div>
@@ -38,6 +39,22 @@ function UploadBox() {
                     <button onClick={handleAnalyze}>
                         Analyze Image
                     </button>
+
+                    {results && (
+                        <>
+                            <p>
+                                Found {results.recommendations.length} recommendations
+                            </p>
+
+                            <ul>
+                                {results.recommendations.map((recommendation) => (
+                                    <li key={recommendation.id}>
+                                        {recommendation.title}
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
                 </>
             )}
         </div>
