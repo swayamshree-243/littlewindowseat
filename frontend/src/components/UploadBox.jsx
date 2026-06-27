@@ -1,11 +1,12 @@
 import { analyzeImage } from "../services/recommendationService";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function UploadBox() {
     const [file, setFile] = useState(null);
-    const [results, setResults] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -19,8 +20,11 @@ function UploadBox() {
             setLoading(true);
 
             const data = await analyzeImage(file);
-
-            setResults(data);
+            navigate("/results", {
+                state: {
+                    recommendations: data.recommendations
+                }
+            });
         } catch (err) {
             console.error(err);
             setError("Something went wrong. Please try again.");
@@ -53,22 +57,6 @@ function UploadBox() {
                     </button>
 
                     {error && <p>{error}</p>}
-
-                    {results && (
-                        <>
-                            <p>
-                                Found {results.recommendations.length} recommendations
-                            </p>
-
-                            <ul>
-                                {results.recommendations.map((recommendation) => (
-                                    <li key={recommendation.id}>
-                                        {recommendation.title}
-                                    </li>
-                                ))}
-                            </ul>
-                        </>
-                    )}
                 </>
             )}
         </div>
