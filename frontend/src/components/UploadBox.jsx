@@ -4,6 +4,8 @@ import { useState } from "react";
 function UploadBox() {
     const [file, setFile] = useState(null);
     const [results, setResults] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -12,9 +14,19 @@ function UploadBox() {
     const handleAnalyze = async () => {
         if (!file) return;
 
-        const data = await analyzeImage(file);
+        try {
+            setError("");
+            setLoading(true);
 
-        setResults(data);
+            const data = await analyzeImage(file);
+
+            setResults(data);
+        } catch (err) {
+            console.error(err);
+            setError("Something went wrong. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
     return (
         <div>
@@ -36,9 +48,11 @@ function UploadBox() {
 
                     <br />
 
-                    <button onClick={handleAnalyze}>
-                        Analyze Image
+                    <button onClick={handleAnalyze} disabled={loading}>
+                        {loading ? "Analyzing..." : "Analyze Image"}
                     </button>
+
+                    {error && <p>{error}</p>}
 
                     {results && (
                         <>
