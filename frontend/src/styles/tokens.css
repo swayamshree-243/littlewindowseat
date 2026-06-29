@@ -1,0 +1,54 @@
+/* ============================================
+   DESIGN TOKENS — Little Window Seat
+============================================ */
+
+:root {
+  /* Primary — baby blue */
+  --color-sky-100: #F0F8FF;
+  --color-sky-300: #D9ECFF;
+  --color-sky-500: #B7DCFF;
+  --color-sky-700: #7CB4E8;
+
+  /* Accent — blush pink */
+  --color-blush-100: #FFF1F8;
+  --color-blush-300: #FFD9EC;
+  --color-blush-500: #FFB8DD;
+
+  /* Accent — lavender */
+  --color-lavender-300: #EAE0FF;
+  --color-lavender-500: #D6C4FF;
+
+  /* Base / neutral */
+  --color-cream: #FFFBF2;
+  --color-white: #FFFFFF;
+  --color-ink: #5B5470;
+  --color-ink-soft: #8A84A0;
+
+  /* Sparkle accent — used sparingly */
+  --color-gold: #FFE49C;
+
+  /* Typography */
+  --font-display: "Fredoka", sans-serif;
+  --font-body: "Quicksand", sans-serif;
+
+  --fs-hero: clamp(2.75rem, 7vw, 4.5rem);
+  --fs-h2: clamp(1.75rem, 4vw, 2.5rem);
+  --fs-body: 1.05rem;
+  --fs-small: 0.875rem;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3.5rem;
+  --space-xl: 6rem;
+
+  /* Radius & shadow */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 32px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 8px 24px rgba(120, 140, 200, 0.15);
+  --shadow-card: 0 12px 30px rgba(180, 160, 220, 0.18);
+}
